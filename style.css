@@ -1,37 +1,44 @@
 body {
-    width:90vw;
     height:100vh;
 }
 .calculator {
     display: flex;
     flex-direction: column;
     font-size: 29px;
+    max-height: 600px;
+    color:white;
+    border:grey solid 6px;
+    border-radius: 5px;
+    font-family:Georgia, 'Times New Roman', Times, serif;
+    padding:1px;
 }
 
 .button {
     display: flex;
-    border: black solid 1px;
-    flex: 1;
+    border: white solid 1px;
     padding: 10px;
+    flex:1;
+    background-color: black;
 }
 
 .line {
     display:flex;
     flex: 1;
-    min-width: 200px;
 }
 
 .display {
+    display:flex;
+    justify-content: flex-end;
 }
 
 .zero {
-    border-right:transparent solid 1px;
+    border-right:black solid 1px;
+}
 
+.clear, .equals {
+    background-color: grey;
 }
-.zero2 {
-    border-left:transparent solid 1px;
-    border-right:transparent solid 1px;
-}
-.zero3 {
-    border-left:transparent solid 1px;
+
+.plus, .minus, .multiply, .divide{
+    background-color: orange;
 }

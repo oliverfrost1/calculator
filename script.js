@@ -33,3 +33,27 @@ function operate(operator,num1,num2){
             console.log("ERROR IN OPERATOR!");
     }
 }
+
+function addToDisplay(e){
+    if(display.textContent == 0) {
+        display.textContent = this.textContent;
+        return;
+    }
+    display.textContent = display.textContent+this.textContent;
+}
+
+function clear(e){
+    display.textContent = 0;
+}
+
+//Get display value and add it to a variable that always has it.
+let display = document.querySelector(".display");
+let displayValue = display.textContent;
+
+//Get all number buttons and add eventlisteners to them
+let numberButtons = document.querySelectorAll(".number");
+numberButtons.forEach(number => number.addEventListener("click",addToDisplay));
+
+//Add clear button and event listener to it
+let clearButton = document.querySelector(".clear");
+clearButton.addEventListener("click",clear);
