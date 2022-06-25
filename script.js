@@ -1,22 +1,22 @@
 function add(num1,num2) {
     //Returning the added numbers using "+";
-    return num1 + num2;
+    return parseInt(num1) + parseInt(num2);
 };
 
 
 function substract(num1,num2) {
     //return the subtracted numbers using "-";
-    return num1 - num2;
+    return parseInt(num1) - parseInt(num2);
 };
 
 function multiply(num1,num2) {
     //multiplies and returns
-    return num1 * num2;
+    return parseInt(num1) * parseInt(num2);
 }
 
 function divide(num1,num2) {
     //divides and returns
-    return num1 / num2;
+    return parseInt(num1) / parseInt(num2);
 }
 
 function operate(operator,num1,num2){
@@ -42,9 +42,42 @@ function addToDisplay(e){
     display.textContent = display.textContent+this.textContent;
 }
 
-function clear(e){
+function clearAll(e){
     display.textContent = 0;
+    let firstNum = null;
+    let lastNum = null;
+    let operator = null;
 }
+
+function operatorPressed(e){
+    if(operator == null) operator = this.textContent;
+    if(firstNum == null) {
+        firstNum = display.textContent;
+        display.textContent = 0;
+        return;
+    }
+    if(firstNum !== null) {
+        console.log(firstNum);
+        console.log(display.textContent);
+        console.log(operator);
+        let result = operate(operator,firstNum, display.textContent);
+        display.textContent = result;
+        firstNum = result;
+        operator = this.textContent;
+    }
+};
+
+
+function clearOperationMemory(){
+    let firstNum = null;
+    let lastNum = null;
+    let operator = null;
+}
+
+//Floating operation. Array of operator and numbers is added for memory.
+let firstNum = null;
+let lastNum = null;
+let operator = null;
 
 //Get display value and add it to a variable that always has it.
 let display = document.querySelector(".display");
@@ -56,4 +89,14 @@ numberButtons.forEach(number => number.addEventListener("click",addToDisplay));
 
 //Add clear button and event listener to it
 let clearButton = document.querySelector(".clear");
-clearButton.addEventListener("click",clear);
+clearButton.addEventListener("click",clearAll);
+
+//Adding operation buttons
+let addButton = document.querySelector(".plus");
+let minusButton = document.querySelector(".minus");
+let multiplyButton = document.querySelector(".multiply");
+let divideButton = document.querySelector(".divide");
+addButton.addEventListener("click", operatorPressed);
+minusButton.addEventListener("click", operatorPressed);
+multiplyButton.addEventListener("click", operatorPressed);
+divideButton.addEventListener("click", operatorPressed);
