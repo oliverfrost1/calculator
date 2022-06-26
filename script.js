@@ -1,23 +1,29 @@
 function add(num1,num2) {
     //Returning the added numbers using "+";
+    num1 = parseFloat(num1);
+    num2 = parseFloat(num2);
     return num1 + num2;
 };
 
 
 function substract(num1,num2) {
     //return the subtracted numbers using "-";
+    num1 = parseFloat(num1);
+    num2 = parseFloat(num2);
     return num1 - num2;
 };
 
 function multiply(num1,num2) {
     //multiplies and returns
-    console.log(num1);
-    console.log(num2);
+    num1 = parseFloat(num1);
+    num2 = parseFloat(num2);
     return num1 * num2;
 }
 
 function divide(num1,num2) {
     //divides and returns
+    num1 = parseFloat(num1);
+    num2 = parseFloat(num2);
     return num1 / num2;
 }
 
@@ -152,6 +158,7 @@ function operatorPressed(e){
 function equalsPressed(e) {
     //Just operates based on memory values and display.textContent
     removeOperatorBackground();
+    if(operator == null) return;
     display.textContent = operate(operator,firstNum, display.textContent);
 }
 
