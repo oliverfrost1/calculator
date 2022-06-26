@@ -1,12 +1,12 @@
 function add(num1,num2) {
     //Returning the added numbers using "+";
-    return parseInt(num1) + parseInt(num2);
+    return num1 + num2;
 };
 
 
 function substract(num1,num2) {
     //return the subtracted numbers using "-";
-    return parseInt(num1) - parseInt(num2);
+    return num1 - num2;
 };
 
 function multiply(num1,num2) {
@@ -18,28 +18,36 @@ function multiply(num1,num2) {
 
 function divide(num1,num2) {
     //divides and returns
-    return parseInt(num1) / parseInt(num2);
+    return num1 / num2;
 }
 
 function operate(operator,num1,num2){
+    let calculated = 0;
     switch(operator){
         case "+":
-            return add(num1,num2);
+            calculated = add(num1,num2);
+            break;
         case "-":
-            return substract(num1,num2);
+            calculated = substract(num1,num2);
+            break;
         case "*":
-            return multiply(num1,num2);
+            calculated = multiply(num1,num2);
+            break;
         case "/":
-            return divide(num1,num2);
+            calculated = divide(num1,num2);
+            break;
         default:
             console.log("ERROR IN OPERATOR!");
     }
+    return (Math.round(calculated*10)/10);
+
 }
 
 function addToDisplay(e){
     //This makes it so that when an operator is pressed it replaces the content, because its a placeholder
-    if(operatorButtonPressed) {
+    if(operatorButtonPressed == true) {
         display.textContent = this.textContent;
+        operatorButtonPressed = false;
         return;
     }
     //If one operation has already happened
@@ -53,7 +61,7 @@ function addToDisplay(e){
         display.textContent = "-" + this.textContent;
         return;
     }
-    if(display.textContent == 0) {
+    if(display.textContent == "0") {
         display.textContent = this.textContent;
         console.log("is 0");
         return;
