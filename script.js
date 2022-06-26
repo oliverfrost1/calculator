@@ -24,6 +24,7 @@ function divide(num1,num2) {
     //divides and returns
     num1 = parseFloat(num1);
     num2 = parseFloat(num2);
+    if(num2 == 0) return "You silly goose!";
     return num1 / num2;
 }
 
@@ -45,6 +46,7 @@ function operate(operator,num1,num2){
         default:
             console.log("ERROR IN OPERATOR!");
     }
+    if(calculated == "You silly goose!") return "You silly goose!";
     return (Math.round(calculated*10)/10);
 
 }
@@ -181,6 +183,16 @@ function addDot(){
     }
 }
 
+function deleteLast(){
+    console.log(display.textContent.length);
+    if(display.textContent.length > 1){
+        display.textContent = display.textContent.slice(0,-1);
+    }
+    if(display.textContent.length == 1){
+        display.textContent = 0;
+    }
+}
+
 //Needed variables for functionality
 //firstNum is the number that is stored from the last screen
 let firstNum = null;
@@ -191,7 +203,9 @@ let operatorButtonPressed = false;
 
 //Get display value and add it to a variable that always has it.
 let display = document.querySelector(".display");
+display.value = 0;
 let displayValue = display.textContent;
+
 
 //Get all number buttons and add eventlisteners to them
 let numberButtons = document.querySelectorAll(".number");
@@ -212,6 +226,10 @@ dotButton.addEventListener("click", addDot);
 //Add clear button and event listener to it
 let clearButton = document.querySelector(".clear");
 clearButton.addEventListener("click",clearAll);
+
+//Add backspace button and event for functionality
+let backspaceButton = document.querySelector(".backspace");
+backspaceButton.addEventListener("click",deleteLast);
 
 //Adding operation buttons
 //Math ops
