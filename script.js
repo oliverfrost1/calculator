@@ -49,6 +49,16 @@ function clearAll(e){
     let operator = null;
 }
 
+function animateButton(e) {
+    console.log("animation!");
+    this.classList.remove("buttonAnimation");
+    this.classList.add("buttonAnimation");
+}
+
+function stopButtonAnimation(e){
+    this.classList.remove("buttonAnimation");
+}
+
 function operatorPressed(e){
     if(operator == null) operator = this.textContent;
     if(firstNum == null) {
@@ -100,3 +110,9 @@ addButton.addEventListener("click", operatorPressed);
 minusButton.addEventListener("click", operatorPressed);
 multiplyButton.addEventListener("click", operatorPressed);
 divideButton.addEventListener("click", operatorPressed);
+
+
+//Adding animation to buttons
+let allButtons = document.querySelectorAll(".button");
+allButtons.forEach(button => button.addEventListener("click", animateButton));
+allButtons.forEach(button => button.addEventListener("animationend", stopButtonAnimation));

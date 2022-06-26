@@ -1,16 +1,19 @@
 body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
     height:100vh;
 }
-.calculator {
-    display: flex;
-    flex-direction: column;
-    font-size: 29px;
-    max-height: 600px;
-    color:white;
-    border:grey solid 6px;
-    border-radius: 5px;
-    font-family:Georgia, 'Times New Roman', Times, serif;
-    padding:1px;
+.container {
+    height: 610px;
+    display: grid;
+    grid-template-columns: repeat(4,100px);
+    grid-template-rows: repeat(6,100px);
+    padding: 10px;
+    width: 406px;
+    background-color: #2196F3;
+    gap: 2px;
+    color: black;
 }
 
 .button {
@@ -18,27 +21,43 @@ body {
     border: white solid 1px;
     padding: 10px;
     flex:1;
-    background-color: black;
-}
-
-.line {
-    display:flex;
-    flex: 1;
+    background-color: rgb(201, 234, 238);
+    border: 3px black solid;
+    border-radius: 4px;
+    font-size: 40px;
+    justify-content: center;
+    align-items: center;
 }
 
 .display {
-    display:flex;
-    justify-content: flex-end;
+    display: flex;
+    grid-column: 1/5;
+    background-color: rgb(190, 184, 184);
+    color: black;
+    border: 3px black solid;
+    border-radius: 4px;
+    font-size: 40px;
+    justify-content:right;
+    align-items: center;
 }
 
 .zero {
-    border-right:black solid 1px;
+    grid-column: 1/3;
 }
 
-.clear, .equals {
-    background-color: grey;
+.changer {
+    background-color: rgba(10, 10, 233, 0.452);
 }
 
-.plus, .minus, .multiply, .divide{
-    background-color: orange;
+.operator {
+    background-color: rgba(206, 149, 45, 0.986);
+}
+
+.buttonAnimation {
+    animation-name: buttonAnimation;
+    animation-duration: 0.15s;
+}
+
+@keyframes buttonAnimation {
+    0% {background-color: white;}
 }
