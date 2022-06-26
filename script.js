@@ -53,32 +53,35 @@ function operate(operator,num1,num2){
 
 function addToDisplay(e){
     //This makes it so that when an operator is pressed it replaces the content, because its a placeholder
+    removeOperatorBackground();
     if(operatorButtonPressed == true) {
-        display.textContent = this.textContent;
+        display.value = this.textContent;
+        operationHappened = false;
         operatorButtonPressed = false;
         return;
     }
+    operatorButtonPressed = false;
+
     //If one operation has already happened
     if(firstNum !== null && operationHappened == true) {
-        display.textContent = this.textContent;
+        display.value = this.textContent;
         operationHappened = false;
         return;
     }
     //special case if it's -0 because -08 looks stupid
-    if(display.textContent == "-0") {
-        display.textContent = "-" + this.textContent;
+    if(display.value == "-0") {
+        display.value = "-" + this.textContent;
         return;
     }
-    if(display.textContent == "0") {
-        display.textContent = this.textContent;
-        console.log("is 0");
+    if(display.value == "0") {
+        display.value = this.textContent;
         return;
     }
-    display.textContent = display.textContent+this.textContent;
+    display.value = display.value+this.textContent;
 }
 
 function clearAll(e){
-    display.textContent = 0;
+    display.value = 0;
     removeOperatorBackground();
     firstNum = null;
     lastNum = null;
@@ -129,67 +132,82 @@ function removeOperatorBackground(){
 //This is started if an operator is pressed and it calculates.
 function operatorPressed(e){
     //if operator hasn't been pressed, then add display and operator to memory and return. 
-    console.log(display.textContent);
-    
     removeOperatorBackground();
     addOperatorBackground(this);
+    if(operatorButtonPressed == true){
+        operator = getOperator(e);
+        console.log("2");
+        return;
+    }
+    
+    //Runs first operation
     if(operator == null) {
         operator = getOperator(e);
-        firstNum = display.textContent;
+        firstNum = display.value;
+        operatorButtonPressed = true;
+        console.log("3");
+        return;
+    }
+
+    if(operator !== getOperator(e)){
+        console.log("3.5");
+        operator = getOperator(e);
         operatorButtonPressed = true;
         return;
     }
 
     if(firstNum !== null && operationHappened == false) {
-        console.log(firstNum);
-        console.log(display.textContent);
-        console.log(operator);
-        //if(display.textContent !== "0")
-        let result = operate(operator,firstNum, display.textContent);
-        display.textContent = result;
-        firstNum = result;
+        let result = operate(operator,firstNum, display.value);
         operator = getOperator(e);
+        display.value = result;
+        firstNum = result;
         operationHappened = true;
+        console.log("4");
+        
         return;
     }
+    console.log("5");
     if(firstNum !== null && operationHappened == true) {
         return;
     }
+    console.log("6");
 };
 
 function equalsPressed(e) {
-    //Just operates based on memory values and display.textContent
+    //Just operates based on memory values and display.value
     removeOperatorBackground();
+    operatorButtonPressed = false;
     if(operator == null) return;
-    display.textContent = operate(operator,firstNum, display.textContent);
+    let resultFromCalc = operate(operator,firstNum, display.value);
+    display.value = resultFromCalc;
+    firstNum = resultFromCalc;
 }
 
 //Makes number plus or minus by multiplying with -1
 function numberToPlusOrMinus(){
-    if(display.textContent !== "0") {
-        display.textContent = display.textContent * (-1);
+    if(display.value !== "0") {
+        display.value = display.value * (-1);
     } else {
-        display.textContent = "-0";
+        display.value = "-0";
     }
 }
 
 function toPercent(){
-    display.textContent = display.textContent/100;
+    display.value = display.value/100;
 }
 
 function addDot(){
-    if(!display.textContent.includes(".")){
-        display.textContent = display.textContent + ".";
+    if(!display.value.includes(".")){
+        display.value = display.value + ".";
     }
 }
 
 function deleteLast(){
-    console.log(display.textContent.length);
-    if(display.textContent.length > 1){
-        display.textContent = display.textContent.slice(0,-1);
+    if(display.value.length > 1){
+        display.value = display.value.slice(0,-1);
     }
-    if(display.textContent.length == 1){
-        display.textContent = 0;
+    if(display.value.length == 1){
+        display.value = 0;
     }
 }
 
@@ -204,7 +222,7 @@ let operatorButtonPressed = false;
 //Get display value and add it to a variable that always has it.
 let display = document.querySelector(".display");
 display.value = 0;
-let displayValue = display.textContent;
+let displayValue = display.value;
 
 
 //Get all number buttons and add eventlisteners to them
