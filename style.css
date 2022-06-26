@@ -41,6 +41,10 @@ body {
     align-items: center;
 }
 
+.pressedOperator {
+    background-color: rgb(224, 200, 150);
+}
+
 .zero {
     grid-column: 1/3;
 }

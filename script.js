@@ -37,6 +37,11 @@ function operate(operator,num1,num2){
 }
 
 function addToDisplay(e){
+    //This makes it so that when an operator is pressed it replaces the content, because its a placeholder
+    if(operatorButtonPressed) {
+        display.textContent = this.textContent;
+        return;
+    }
     //If one operation has already happened
     if(firstNum !== null && operationHappened == true) {
         display.textContent = this.textContent;
@@ -58,20 +63,22 @@ function addToDisplay(e){
 
 function clearAll(e){
     display.textContent = 0;
+    removeOperatorBackground();
     firstNum = null;
     lastNum = null;
     operator = null;
 }
 
-function animateButton(e) {
+function animateButton() {
     this.classList.remove("buttonAnimation");
     this.classList.add("buttonAnimation");
 }
 
-function stopButtonAnimation(e){
+function stopButtonAnimation(){
     this.classList.remove("buttonAnimation");
 }
 
+//gets the pressed operator. Added to support "/".
 function getOperator(e){
     let returnValue = "";
     if(e.target.textContent == "÷"){
@@ -82,21 +89,46 @@ function getOperator(e){
     return returnValue;
 }
 
+//Adds "clicked" operator background to it.
+function addOperatorBackground(thisOperator) {
+    thisOperator.classList.add("pressedOperator");
+    thisOperator.classList.remove("operator");
+}
+
+//Removes "clicked" operator background from all of them
+function removeOperatorBackground(){
+    addButton.classList.remove("pressedOperator");
+    addButton.classList.add("operator");
+
+    minusButton.classList.remove("pressedOperator");
+    minusButton.classList.add("operator");
+
+    multiplyButton.classList.remove("pressedOperator");
+    multiplyButton.classList.add("operator");
+
+    divideButton.classList.remove("pressedOperator");
+    divideButton.classList.add("operator");
+}
+
 //This is started if an operator is pressed and it calculates.
 function operatorPressed(e){
     //if operator hasn't been pressed, then add display and operator to memory and return. 
+    console.log(display.textContent);
     
+    removeOperatorBackground();
+    addOperatorBackground(this);
     if(operator == null) {
         operator = getOperator(e);
-        console.log("Setting first num");
         firstNum = display.textContent;
-        display.textContent = 0;
+        operatorButtonPressed = true;
         return;
     }
+
     if(firstNum !== null && operationHappened == false) {
         console.log(firstNum);
         console.log(display.textContent);
         console.log(operator);
+        //if(display.textContent !== "0")
         let result = operate(operator,firstNum, display.textContent);
         display.textContent = result;
         firstNum = result;
@@ -111,6 +143,7 @@ function operatorPressed(e){
 
 function equalsPressed(e) {
     //Just operates based on memory values and display.textContent
+    removeOperatorBackground();
     display.textContent = operate(operator,firstNum, display.textContent);
 }
 
@@ -139,6 +172,7 @@ let firstNum = null;
 //the operator that was called.
 let operator = null;
 let operationHappened = false;
+let operatorButtonPressed = false;
 
 //Get display value and add it to a variable that always has it.
 let display = document.querySelector(".display");
