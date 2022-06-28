@@ -1,3 +1,16 @@
+//THERE IS A BUG WITH firstNum and equals and operators you
+//may need to add more variables for the continually pressing =
+//and differentiate that from firstNum
+
+
+//Feature: Clicking equals repeats last calculation with new value. WORKS
+//Feature: Clicking operators doesn't do anything before equals is clicked, if no operation has happened yet. WORKS.
+//Feature: Chaining calculation should work as intended. WORKS. 
+//FIXED: When switching operator type, the current calculation is done with the new type instead of the old one. It should do the old one first and then use the new one.
+//FIXED: Clicking equals after an operation should repeat that operation. WORKS
+
+
+
 function add(num1,num2) {
     //Returning the added numbers using "+";
     num1 = parseFloat(num1);
@@ -30,6 +43,9 @@ function divide(num1,num2) {
 
 function operate(operator,num1,num2){
     let calculated = 0;
+    lastOperationFirstNum = num1;
+    lastOperationLastNum = num2;
+    lastOperationOperator = operator;
     switch(operator){
         case "+":
             calculated = add(num1,num2);
@@ -46,6 +62,7 @@ function operate(operator,num1,num2){
         default:
             console.log("ERROR IN OPERATOR!");
     }
+    console.log("Calced: " + calculated);
     if(calculated == "You silly goose!") return "You silly goose!";
     return (Math.round(calculated*10)/10);
 
@@ -78,6 +95,7 @@ function addToDisplay(e){
         return;
     }
     display.value = display.value+this.textContent;
+    lastOperationLastNum = display.value;
 }
 
 function clearAll(e){
@@ -86,6 +104,9 @@ function clearAll(e){
     firstNum = null;
     lastNum = null;
     operator = null;
+    lastOperationLastNum = null;
+    lastOperationFirstNum = null;
+    lastOperationOperator = null;
 }
 
 function animateButton() {
@@ -134,6 +155,15 @@ function operatorPressed(e){
     //if operator hasn't been pressed, then add display and operator to memory and return. 
     removeOperatorBackground();
     addOperatorBackground(this);
+    console.log("Operator pressed firstNum:" + firstNum);
+    console.log("Operator pressed display.value:" + display.value);
+    console.log("Operator pressed operator:" + getOperator(e));
+
+    lastOperationOperator = getOperator(e);
+
+    console.log("Operator pressed lastOperationLastNum:" + lastOperationLastNum);
+    console.log("Operator pressed lastOperationOperator:" + lastOperationOperator);
+
     if(operatorButtonPressed == true){
         operator = getOperator(e);
         console.log("2");
@@ -151,17 +181,21 @@ function operatorPressed(e){
 
     if(operator !== getOperator(e)){
         console.log("3.5");
+        let result = operate(operator, firstNum, display.value);
+        firstNum = result;
+        display.value = result;
         operator = getOperator(e);
         operatorButtonPressed = true;
         return;
     }
 
     if(firstNum !== null && operationHappened == false) {
-        let result = operate(operator,firstNum, display.value);
+        let result = operate(operator, firstNum, display.value);
         operator = getOperator(e);
         display.value = result;
-        firstNum = result;
+        firstNum = display.value;
         operationHappened = true;
+        operatorButtonPressed = true;
         console.log("4");
         
         return;
@@ -177,10 +211,22 @@ function equalsPressed(e) {
     //Just operates based on memory values and display.value
     removeOperatorBackground();
     operatorButtonPressed = false;
+    console.log("Equals pressed firstNum:" + firstNum);
     if(operator == null) return;
-    let resultFromCalc = operate(operator,firstNum, display.value);
-    display.value = resultFromCalc;
-    firstNum = resultFromCalc;
+    if(lastOperationFirstNum == null) {
+        let resultFromCalc = operate(operator, firstNum, display.value);
+        display.value = resultFromCalc;
+        firstNum = display.value;
+        operatorButtonPressed = true;
+        return;
+    } else {
+        let resultFromCalc = operate(lastOperationOperator,firstNum, lastOperationLastNum);
+        display.value = resultFromCalc;
+        firstNum = display.value;
+        operatorButtonPressed = true;
+        return;
+    }
+    
 }
 
 //Makes number plus or minus by multiplying with -1
@@ -218,6 +264,10 @@ let firstNum = null;
 let operator = null;
 let operationHappened = false;
 let operatorButtonPressed = false;
+
+let lastOperationLastNum = null;
+let lastOperationFirstNum = null;
+let lastOperationOperator = null;
 
 //Get display value and add it to a variable that always has it.
 let display = document.querySelector(".display");
