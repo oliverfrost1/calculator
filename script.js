@@ -2,15 +2,6 @@
 //may need to add more variables for the continually pressing =
 //and differentiate that from firstNum
 
-
-//Feature: Clicking equals repeats last calculation with new value. WORKS
-//Feature: Clicking operators doesn't do anything before equals is clicked, if no operation has happened yet. WORKS.
-//Feature: Chaining calculation should work as intended. WORKS. 
-//FIXED: When switching operator type, the current calculation is done with the new type instead of the old one. It should do the old one first and then use the new one.
-//FIXED: Clicking equals after an operation should repeat that operation. WORKS
-
-
-
 function add(num1,num2) {
     //Returning the added numbers using "+";
     num1 = parseFloat(num1);
@@ -214,13 +205,15 @@ function equalsPressed(e) {
     console.log("Equals pressed firstNum:" + firstNum);
     if(operator == null) return;
     if(lastOperationFirstNum == null) {
+        console.log("lastOperationFirstNum")
         let resultFromCalc = operate(operator, firstNum, display.value);
         display.value = resultFromCalc;
         firstNum = display.value;
         operatorButtonPressed = true;
         return;
     } else {
-        let resultFromCalc = operate(lastOperationOperator,firstNum, lastOperationLastNum);
+        console.log("Else")
+        let resultFromCalc = operate(lastOperationOperator, firstNum, lastOperationLastNum);
         display.value = resultFromCalc;
         firstNum = display.value;
         operatorButtonPressed = true;
